@@ -151,7 +151,7 @@ const Page: React.FC = () => {
                   </td>
                   <td className=" border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding text-2xl"
+                      className=" table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
