@@ -109,7 +109,7 @@ const Page: React.FC = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black text-green-600 font-[900]">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
