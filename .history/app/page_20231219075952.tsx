@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -26,8 +26,6 @@ const Page: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const searchParams = useSearchParams();
   let search = searchParams.get("name");
-  const router = useRouter();
-
   useEffect(() => {
     // Set initial value only if it's different from the current state
     if (search !== null && search !== textName) {
@@ -48,11 +46,6 @@ const Page: React.FC = () => {
       .then((res) => setDataSource(res.data));
   };
 
-  const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
-    router.push(`?name=${encodeURIComponent(newTextName)}`);
-  };
-
   return (
     <div className="">
       <Header />
@@ -69,9 +62,7 @@ const Page: React.FC = () => {
             value={textName}
             ref={inputFocusRef}
             onChange={(e) => {
-              const newValue = e.target.value;
-              setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
+              setTextName(e.target.value);
             }}
           />
           <Button type="submit">

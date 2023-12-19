@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -26,17 +26,11 @@ const Page: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const searchParams = useSearchParams();
   let search = searchParams.get("name");
-  const router = useRouter();
-
-  useEffect(() => {
-    // Set initial value only if it's different from the current state
-    if (search !== null && search !== textName) {
-      setTextName(search);
-    }
-  }, [search, textName]);
-
+  console.log(search);
+  if (search !== null) {
+    setTextName(search);
+  }
   const inputFocusRef = useRef(null);
-
   useEffect(() => {
     inputFocusRef.current.focus();
   }, []);
@@ -46,11 +40,6 @@ const Page: React.FC = () => {
     axios
       .get(`https://phinzi.com/convert?name=${textName}`)
       .then((res) => setDataSource(res.data));
-  };
-
-  const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
-    router.push(`?name=${encodeURIComponent(newTextName)}`);
   };
 
   return (
@@ -69,9 +58,8 @@ const Page: React.FC = () => {
             value={textName}
             ref={inputFocusRef}
             onChange={(e) => {
-              const newValue = e.target.value;
-              setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
+              setTextName(e.target.value);
+              search = e.target.value;
             }}
           />
           <Button type="submit">
