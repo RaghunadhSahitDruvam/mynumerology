@@ -176,7 +176,7 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

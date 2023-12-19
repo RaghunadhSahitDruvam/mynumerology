@@ -1,15 +1,12 @@
 // @ts-nocheck
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -24,18 +21,8 @@ interface DataSource {
 }
 
 const Page: React.FC = () => {
-  let [textName, setTextName] = useState<string>("");
+  const [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
-  const searchParams = useSearchParams();
-  let search = searchParams.get("name");
-  console.log(search);
-  if (search !== null) {
-    textName = search;
-  }
-  const inputFocusRef = useRef(null);
-  useEffect(() => {
-    inputFocusRef.current.focus();
-  }, []);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,8 +44,6 @@ const Page: React.FC = () => {
             type="text"
             placeholder="Name"
             className="w-[70%]"
-            value={textName}
-            ref={inputFocusRef}
             onChange={(e) => setTextName(e.target.value)}
           />
           <Button type="submit">
@@ -69,35 +54,24 @@ const Page: React.FC = () => {
       {dataSource ? (
         <>
           <div className="container mt-[30px] flex items-start justify-start">
-            <table
-              border={2}
-              className="border-2 dark:border-white border-black"
-            >
-              <thead className="border-2  dark:border-white border-black p-[20px]">
-                <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black px-[20px]">
+            <table border={2} className="border-2 dark:border-white">
+              <thead className="border-2  dark:border-white p-[20px]">
+                <tr className="border-2  dark:border-white">
+                  <th className="border-2  dark:border-white px-[20px] flex items-center">
                     Group
                   </th>
-                  <th className="border-2  dark:border-white border-black">
-                    Name
-                  </th>
-                  <th className="border-2  dark:border-white border-black px-[20px]">
+                  <th className="border-2  dark:border-white">Name</th>
+                  <th className="border-2  dark:border-white px-[20px]">
                     Total
                   </th>
-                  <th className="border-2  dark:border-white border-black px-[20px]">
-                    V
-                  </th>
-                  <th className="border-2  dark:border-white border-black px-[20px]">
-                    C
-                  </th>
+                  <th className="border-2  dark:border-white px-[20px]">V</th>
+                  <th className="border-2  dark:border-white px-[20px]">C</th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black ">
-                <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black">
-                    C
-                  </td>
-                  <td className="px-[20px] border-2  dark:border-white border-black">
+              <tbody className="border-2  dark:border-white">
+                <tr className="border-2  dark:border-white">
+                  <td className="border-2  dark:border-white">C</td>
+                  <td className="px-[20px] border-2  dark:border-white">
                     <table
                       className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
@@ -108,23 +82,21 @@ const Page: React.FC = () => {
                     ></table>
                   </td>
 
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {dataSource?.g2tot}
                   </td>
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {" "}
                     {dataSource?.g2vtot}
                   </td>
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {" "}
                     {dataSource?.g2nettot}
                   </td>
                 </tr>
-                <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black">
-                    P
-                  </td>
-                  <td className="px-[20px] border-2  dark:border-white border-black">
+                <tr className="border-2  dark:border-white">
+                  <td className="border-2  dark:border-white">P</td>
+                  <td className="px-[20px] border-2  dark:border-white">
                     <table
                       className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
@@ -135,14 +107,14 @@ const Page: React.FC = () => {
                     ></table>
                   </td>
 
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {dataSource?.g3tot}
                   </td>
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {" "}
                     {dataSource?.g3vtot}
                   </td>
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white">
                     {" "}
                     {dataSource?.g3nettot}
                   </td>
@@ -150,18 +122,9 @@ const Page: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <div className="container flex  items-start mt-[10px] justify-between">
+          <div className="flex justify-center items-center mt-[10px]">
             {" "}
             Total Letters - {dataSource?.tot_letters}
-            <Button
-              variant={"destructive"}
-              onClick={() => {
-                setDataSource(null);
-                setTextName("");
-              }}
-            >
-              Cancel
-            </Button>
           </div>
         </>
       ) : (
@@ -176,7 +139,7 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

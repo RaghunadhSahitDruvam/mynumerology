@@ -1,6 +1,6 @@
 // @ts-nocheck
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -24,18 +24,12 @@ interface DataSource {
 }
 
 const Page: React.FC = () => {
-  let [textName, setTextName] = useState<string>("");
+  const [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
+  const router = useRouter();
   const searchParams = useSearchParams();
-  let search = searchParams.get("name");
+  const search = searchParams.get("name");
   console.log(search);
-  if (search !== null) {
-    textName = search;
-  }
-  const inputFocusRef = useRef(null);
-  useEffect(() => {
-    inputFocusRef.current.focus();
-  }, []);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +52,6 @@ const Page: React.FC = () => {
             placeholder="Name"
             className="w-[70%]"
             value={textName}
-            ref={inputFocusRef}
             onChange={(e) => setTextName(e.target.value)}
           />
           <Button type="submit">
@@ -176,7 +169,7 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

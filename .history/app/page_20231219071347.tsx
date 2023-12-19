@@ -1,6 +1,6 @@
 // @ts-nocheck
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -176,7 +176,7 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

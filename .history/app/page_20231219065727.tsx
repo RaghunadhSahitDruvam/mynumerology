@@ -1,15 +1,12 @@
 // @ts-nocheck
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -24,18 +21,8 @@ interface DataSource {
 }
 
 const Page: React.FC = () => {
-  let [textName, setTextName] = useState<string>("");
+  const [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
-  const searchParams = useSearchParams();
-  let search = searchParams.get("name");
-  console.log(search);
-  if (search !== null) {
-    textName = search;
-  }
-  const inputFocusRef = useRef(null);
-  useEffect(() => {
-    inputFocusRef.current.focus();
-  }, []);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,8 +44,6 @@ const Page: React.FC = () => {
             type="text"
             placeholder="Name"
             className="w-[70%]"
-            value={textName}
-            ref={inputFocusRef}
             onChange={(e) => setTextName(e.target.value)}
           />
           <Button type="submit">
@@ -150,18 +135,10 @@ const Page: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <div className="container flex  items-start mt-[10px] justify-between">
+          <div className="container flex  items-start mt-[10px] justify-between w-[350px]">
             {" "}
             Total Letters - {dataSource?.tot_letters}
-            <Button
-              variant={"destructive"}
-              onClick={() => {
-                setDataSource(null);
-                setTextName("");
-              }}
-            >
-              Cancel
-            </Button>
+            <Button variant={"secondary"}>Button</Button>
           </div>
         </>
       ) : (
@@ -176,7 +153,7 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

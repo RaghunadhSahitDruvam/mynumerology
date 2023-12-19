@@ -83,6 +83,6 @@
     @apply my-[20px];
   }
   .table-padding tbody > tr > td {
-    @apply px-[15px];
+    @apply p-[50px];
   }
 }

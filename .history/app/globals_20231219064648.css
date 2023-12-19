@@ -82,7 +82,7 @@
   .gap {
     @apply my-[20px];
   }
-  .table-padding tbody > tr > td {
-    @apply px-[15px];
+  .table-padding tbody > tr {
+    @apply p-[50px];
   }
 }
