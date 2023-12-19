@@ -8,6 +8,7 @@ import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Link } from "next/link";
 
 interface DataSource {
   name_g2_block?: string;
@@ -21,6 +22,23 @@ interface DataSource {
   tot_letters?: number;
 }
 
+// Custom Input component that only allows letters and spaces
+const CustomInput = ({ onChange, ...props }) => {
+  const inputRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    // Use a regular expression to allow only letters (a-z, A-Z) and spaces
+    const sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, "");
+    // Update the input value
+    if (onChange) {
+      onChange({ target: { value: sanitizedValue } });
+    }
+  };
+
+  return <input ref={inputRef} onChange={handleInputChange} {...props} />;
+};
+
 const Page: React.FC = () => {
   let [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
@@ -29,7 +47,6 @@ const Page: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Set initial value only if it's different from the current state
     if (search !== null && search !== textName) {
       setTextName(search);
     }
@@ -37,14 +54,22 @@ const Page: React.FC = () => {
 
   const inputFocusRef = useRef(null);
   const buttonRef = useRef(null);
+
   useEffect(() => {
-    inputFocusRef.current.focus();
-    if (search !== null) {
-      if (buttonRef.current) {
-        buttonRef.current.click();
-      }
+    if (
+      inputFocusRef.current &&
+      document.activeElement !== inputFocusRef.current
+    ) {
+      inputFocusRef.current.focus({
+        behavior: "smooth",
+      });
     }
-  }, []);
+
+    if (search !== null && buttonRef.current) {
+      buttonRef.current.click();
+    }
+  }, [search]);
+
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
@@ -53,20 +78,18 @@ const Page: React.FC = () => {
   };
 
   const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
     router.push(`?name=${encodeURIComponent(newTextName)}`);
   };
 
   return (
     <div className="">
       <Header />
-
       <div>
         <form
           className="container gap flex justify-between"
           onSubmit={(e) => submitHandler(e)}
         >
-          <Input
+          <CustomInput
             type="text"
             placeholder="Name"
             className="w-[70%]"
@@ -75,7 +98,7 @@ const Page: React.FC = () => {
             onChange={(e) => {
               const newValue = e.target.value;
               setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
+              updateURL(newValue);
             }}
           />
           <Button type="submit" ref={buttonRef}>
@@ -92,31 +115,31 @@ const Page: React.FC = () => {
             >
               <thead className="border-2  dark:border-white border-black p-[20px]">
                 <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
-                    Grp.
+                  <th className="border-2  dark:border-white border-black px-[20px]">
+                    Group
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black">
                     Name
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     Total
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     V
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black ">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -138,12 +161,12 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
-                  <td className=" border-2  dark:border-white border-black">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -169,25 +192,23 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
-            <Button
-              variant={"destructive"}
-              onClick={() => {
-                setDataSource(null);
-                setTextName("");
-                const params = new URLSearchParams(searchParams);
-                params.set("name", null);
-              }}
-            >
-              Cancel
-            </Button>
+            Total Letters - {dataSource?.tot_letters}
+            <Link href={"/"}>
+              <Button
+                variant={"destructive"}
+                onClick={() => {
+                  setDataSource(null);
+                  setTextName("");
+                }}
+              >
+                Cancel
+              </Button>
+            </Link>
           </div>
         </>
       ) : (
         <>
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               className="justify-center align-middle items-center"
               src={"/images/up.png"}
@@ -195,7 +216,7 @@ const Page: React.FC = () => {
               height={100}
               width={100}
             />
-          </div> */}
+          </div>
           <div className="container flex justify-center align-middle">
             <h1>Please write your name to get started...</h1>
           </div>

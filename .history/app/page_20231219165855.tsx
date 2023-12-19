@@ -1,13 +1,13 @@
 // @ts-nocheck
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -24,37 +24,20 @@ interface DataSource {
 const Page: React.FC = () => {
   let [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
+
   const searchParams = useSearchParams();
-  let search = searchParams.get("name");
-  const router = useRouter();
+  const pathName = usePathname();
+  const params = new URLSearchParams(searchParams);
+  const name = params.get("name");
+  if (name?.length > 0) {
+    setTextName(name);
+  }
 
-  useEffect(() => {
-    // Set initial value only if it's different from the current state
-    if (search !== null && search !== textName) {
-      setTextName(search);
-    }
-  }, [search, textName]);
-
-  const inputFocusRef = useRef(null);
-  const buttonRef = useRef(null);
-  useEffect(() => {
-    inputFocusRef.current.focus();
-    if (search !== null) {
-      if (buttonRef.current) {
-        buttonRef.current.click();
-      }
-    }
-  }, []);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
       .get(`https://phinzi.com/convert?name=${textName}`)
       .then((res) => setDataSource(res.data));
-  };
-
-  const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
-    router.push(`?name=${encodeURIComponent(newTextName)}`);
   };
 
   return (
@@ -64,21 +47,16 @@ const Page: React.FC = () => {
       <div>
         <form
           className="container gap flex justify-between"
-          onSubmit={(e) => submitHandler(e)}
+          onSubmit={submitHandler}
         >
           <Input
             type="text"
             placeholder="Name"
             className="w-[70%]"
             value={textName}
-            ref={inputFocusRef}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
-            }}
+            onChange={(e) => setTextName(e.target.value)}
           />
-          <Button type="submit" ref={buttonRef}>
+          <Button type="submit">
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </form>
@@ -92,31 +70,31 @@ const Page: React.FC = () => {
             >
               <thead className="border-2  dark:border-white border-black p-[20px]">
                 <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
-                    Grp.
+                  <th className="border-2  dark:border-white border-black px-[20px]">
+                    Group
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black">
                     Name
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     Total
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     V
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black ">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -138,12 +116,12 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
-                  <td className=" border-2  dark:border-white border-black">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -169,16 +147,12 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
+            Total Letters - {dataSource?.tot_letters}
             <Button
               variant={"destructive"}
               onClick={() => {
                 setDataSource(null);
                 setTextName("");
-                const params = new URLSearchParams(searchParams);
-                params.set("name", null);
               }}
             >
               Cancel
@@ -187,7 +161,7 @@ const Page: React.FC = () => {
         </>
       ) : (
         <>
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               className="justify-center align-middle items-center"
               src={"/images/up.png"}
@@ -195,9 +169,9 @@ const Page: React.FC = () => {
               height={100}
               width={100}
             />
-          </div> */}
+          </div>
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
+            <h1>Please write Name up something to get started ...</h1>
           </div>
         </>
       )}

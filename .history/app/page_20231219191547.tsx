@@ -92,29 +92,29 @@ const Page: React.FC = () => {
             >
               <thead className="border-2  dark:border-white border-black p-[20px]">
                 <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black ">
                     Grp.
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black">
                     Name
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black ">
                     Total
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2 px-[10px]  dark:border-white border-black ">
                     V
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2 px-[10px]  dark:border-white border-black ">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black ">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className=" border-2  dark:border-white border-black">
                     <table
                       className=" table-padding"
                       dangerouslySetInnerHTML={{
@@ -138,7 +138,7 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
                   <td className=" border-2  dark:border-white border-black">
@@ -169,9 +169,7 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
+            Total Letters - {dataSource?.tot_letters}
             <Button
               variant={"destructive"}
               onClick={() => {

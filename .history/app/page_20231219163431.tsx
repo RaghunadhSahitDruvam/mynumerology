@@ -8,6 +8,7 @@ import axios from "axios";
 import Header from "@/components/header";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 interface DataSource {
   name_g2_block?: string;
@@ -48,7 +49,12 @@ const Page: React.FC = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .get(`https://phinzi.com/convert?name=${textName}`)
+      .get(
+        `https://phinzi.com/convert?name=${textName.replace(
+          /[^a-zA-Z\s]/g,
+          ""
+        )}`
+      )
       .then((res) => setDataSource(res.data));
   };
 
@@ -92,31 +98,31 @@ const Page: React.FC = () => {
             >
               <thead className="border-2  dark:border-white border-black p-[20px]">
                 <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
-                    Grp.
+                  <th className="border-2  dark:border-white border-black px-[20px]">
+                    Group
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black">
                     Name
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     Total
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     V
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black ">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -138,12 +144,12 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
-                  <td className=" border-2  dark:border-white border-black">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -169,25 +175,23 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
-            <Button
-              variant={"destructive"}
-              onClick={() => {
-                setDataSource(null);
-                setTextName("");
-                const params = new URLSearchParams(searchParams);
-                params.set("name", null);
-              }}
-            >
-              Cancel
-            </Button>
+            Total Letters - {dataSource?.tot_letters}
+            <Link href={"/"}>
+              <Button
+                variant={"destructive"}
+                onClick={() => {
+                  setDataSource(null);
+                  setTextName("");
+                }}
+              >
+                Cancel
+              </Button>
+            </Link>
           </div>
         </>
       ) : (
         <>
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               className="justify-center align-middle items-center"
               src={"/images/up.png"}
@@ -195,7 +199,7 @@ const Page: React.FC = () => {
               height={100}
               width={100}
             />
-          </div> */}
+          </div>
           <div className="container flex justify-center align-middle">
             <h1>Please write your name to get started...</h1>
           </div>

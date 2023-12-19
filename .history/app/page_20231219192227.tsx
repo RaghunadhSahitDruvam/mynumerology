@@ -169,7 +169,7 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
+            <span className="text-green-500 font-[900]">
               Total Letters - {dataSource?.tot_letters}
             </span>
             <Button

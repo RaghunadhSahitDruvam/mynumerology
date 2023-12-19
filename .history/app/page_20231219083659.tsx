@@ -36,14 +36,9 @@ const Page: React.FC = () => {
   }, [search, textName]);
 
   const inputFocusRef = useRef(null);
-  const buttonRef = useRef(null);
+
   useEffect(() => {
     inputFocusRef.current.focus();
-    if (search !== null) {
-      if (buttonRef.current) {
-        buttonRef.current.click();
-      }
-    }
   }, []);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,7 +73,7 @@ const Page: React.FC = () => {
               updateURL(newValue); // Update the URL when input changes
             }}
           />
-          <Button type="submit" ref={buttonRef}>
+          <Button type="submit">
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </form>
@@ -92,31 +87,31 @@ const Page: React.FC = () => {
             >
               <thead className="border-2  dark:border-white border-black p-[20px]">
                 <tr className="border-2  dark:border-white border-black">
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
-                    Grp.
+                  <th className="border-2  dark:border-white border-black px-[20px]">
+                    Group
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black">
                     Name
                   </th>
-                  <th className="border-2  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     Total
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     V
                   </th>
-                  <th className="border-2 px-[10px]  dark:border-white border-black text-green-600 font-[900]">
+                  <th className="border-2  dark:border-white border-black px-[20px]">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
+              <tbody className="border-2  dark:border-white border-black ">
                 <tr className="border-2  dark:border-white border-black">
                   <td className="border-2  dark:border-white border-black">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -138,12 +133,12 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
-                  <td className=" border-2  dark:border-white border-black">
+                  <td className="px-[20px] border-2  dark:border-white border-black">
                     <table
-                      className=" table-padding"
+                      className="px-[20px] table-padding"
                       dangerouslySetInnerHTML={{
                         __html:
                           typeof dataSource !== "undefined" &&
@@ -169,16 +164,12 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
+            Total Letters - {dataSource?.tot_letters}
             <Button
               variant={"destructive"}
               onClick={() => {
                 setDataSource(null);
                 setTextName("");
-                const params = new URLSearchParams(searchParams);
-                params.set("name", null);
               }}
             >
               Cancel
@@ -187,7 +178,7 @@ const Page: React.FC = () => {
         </>
       ) : (
         <>
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               className="justify-center align-middle items-center"
               src={"/images/up.png"}
@@ -195,7 +186,7 @@ const Page: React.FC = () => {
               height={100}
               width={100}
             />
-          </div> */}
+          </div>
           <div className="container flex justify-center align-middle">
             <h1>Please write your name to get started...</h1>
           </div>

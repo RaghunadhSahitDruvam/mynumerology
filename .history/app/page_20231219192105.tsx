@@ -111,10 +111,10 @@ const Page: React.FC = () => {
               </thead>
               <tbody className="border-2  dark:border-white border-black text-blue-500 font-[900]">
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black">
+                  <td className="border-2  dark:border-white border-black text-orange-500">
                     C
                   </td>
-                  <td className=" border-2  dark:border-white border-black ">
+                  <td className=" border-2  dark:border-white border-black text-orange-500">
                     <table
                       className=" table-padding"
                       dangerouslySetInnerHTML={{
@@ -138,7 +138,7 @@ const Page: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="border-2  dark:border-white border-black">
-                  <td className="border-2  dark:border-white border-black ">
+                  <td className="border-2  dark:border-white border-black">
                     P
                   </td>
                   <td className=" border-2  dark:border-white border-black">
@@ -169,9 +169,7 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600 font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
+            Total Letters - {dataSource?.tot_letters}
             <Button
               variant={"destructive"}
               onClick={() => {
