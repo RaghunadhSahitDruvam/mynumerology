@@ -198,11 +198,7 @@ const Page: React.FC = () => {
             <div className="">
               {/* <Button variant={"default"} className="mr-[10px]"> */}
               <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button variant={"default"} className="mr-[10px]">
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
+                <AlertDialogTrigger>Save</AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>

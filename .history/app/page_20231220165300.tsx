@@ -6,19 +6,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 interface DataSource {
   name_g2_block?: string;
@@ -74,7 +64,6 @@ const Page: React.FC = () => {
           .replaceAll(";", "")
           .replaceAll("(", "")
           .replaceAll(")", "")
-          .replaceAll("  ", " ")
       )}`
     );
   };
@@ -100,7 +89,6 @@ const Page: React.FC = () => {
               updateURL(newValue); // Update the URL when input changes
             }}
           />
-
           <Button type="submit" ref={buttonRef}>
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
@@ -196,35 +184,14 @@ const Page: React.FC = () => {
               Total Letters - {dataSource?.tot_letters}
             </span>
             <div className="">
-              {/* <Button variant={"default"} className="mr-[10px]"> */}
-              <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button variant={"default"} className="mr-[10px]">
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Do you want to save this name -{" "}
-                      <b>{textName.toUpperCase()}</b> ?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              {/* </Button> */}
+              <Button variant={"default"} className="mr-[10px]">
+                Save
+              </Button>
               <Link href={"/"}>
                 <Button
                   variant={"destructive"}
                   onClick={() => {
-                    setTextName(null);
+                    setTextName("");
                     setDataSource(null);
                   }}
                 >

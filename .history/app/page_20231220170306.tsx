@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import Header from "@/components/header";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -196,30 +197,25 @@ const Page: React.FC = () => {
               Total Letters - {dataSource?.tot_letters}
             </span>
             <div className="">
-              {/* <Button variant={"default"} className="mr-[10px]"> */}
-              <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button variant={"default"} className="mr-[10px]">
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Do you want to save this name -{" "}
-                      <b>{textName.toUpperCase()}</b> ?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              {/* </Button> */}
+              <Button variant={"default"} className="mr-[10px]">
+                <AlertDialog>
+                  <AlertDialogTrigger>Open</AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Do you want to save this company - {textName} ?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </Button>
               <Link href={"/"}>
                 <Button
                   variant={"destructive"}
