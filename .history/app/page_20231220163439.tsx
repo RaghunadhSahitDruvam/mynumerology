@@ -96,33 +96,33 @@ const Page: React.FC = () => {
           <div className="container mt-[30px] flex items-start justify-start">
             <table
               border={2}
-              className="border-4dark:border-white border-yellow-600"
+              className="border-2 dark:border-white border-pink-600"
             >
-              <thead className="border-4 dark:border-white border-yellow-600 p-[20px]">
-                <tr className="border-4 dark:border-white border-yellow-600">
-                  <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
+              <thead className="border-2  dark:border-white border-pink-600 p-[20px]">
+                <tr className="border-2  dark:border-white border-pink-600">
+                  <th className="border-2  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl font-[900]">
                     Grp.
                   </th>
-                  <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
+                  <th className="border-2  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl font-[900]">
                     Name
                   </th>
-                  <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
+                  <th className="border-2  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl font-[900]">
                     Total
                   </th>
-                  <th className="border-4  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
+                  <th className="border-2 px-[10px]  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl font-[900]">
                     V
                   </th>
-                  <th className="border-4px-[10px]  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900] text-2xl">
+                  <th className="border-2 px-[10px]  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl font-[900] text-2xl">
                     C
                   </th>
                 </tr>
               </thead>
-              <tbody className="border-4 dark:border-white border-yellow-600 text-[#960084] font-[900]">
-                <tr className="border-4 dark:border-white border-yellow-600">
-                  <td className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl ">
+              <tbody className="border-2  dark:border-white border-pink-600 text-[#960084] font-[900]">
+                <tr className="border-2  dark:border-white border-pink-600">
+                  <td className="border-2  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl ">
                     C
                   </td>
-                  <td className=" border-4 dark:border-white border-yellow-600 ">
+                  <td className=" border-2  dark:border-white border-pink-600 ">
                     <table
                       className=" table-padding text-2xl"
                       dangerouslySetInnerHTML={{
@@ -133,23 +133,23 @@ const Page: React.FC = () => {
                     ></table>
                   </td>
 
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {dataSource?.g2tot}
                   </td>
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {" "}
                     {dataSource?.g2vtot}
                   </td>
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {" "}
                     {dataSource?.g2nettot}
                   </td>
                 </tr>
-                <tr className="border-4 dark:border-white border-yellow-600">
-                  <td className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl ">
+                <tr className="border-2  dark:border-white border-pink-600">
+                  <td className="border-2  dark:border-white border-pink-600 bg-green-600 text-white  text-2xl ">
                     P
                   </td>
-                  <td className=" border-4 dark:border-white border-yellow-600">
+                  <td className=" border-2  dark:border-white border-pink-600">
                     <table
                       className=" table-padding text-2xl"
                       dangerouslySetInnerHTML={{
@@ -160,14 +160,14 @@ const Page: React.FC = () => {
                     ></table>
                   </td>
 
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {dataSource?.g3tot}
                   </td>
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {" "}
                     {dataSource?.g3vtot}
                   </td>
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                  <td className="border-2  dark:border-white border-pink-600 text-2xl bg-green-600 text-white ">
                     {" "}
                     {dataSource?.g3nettot}
                   </td>
@@ -177,7 +177,7 @@ const Page: React.FC = () => {
           </div>
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
-            <span className="text-green-600  text-2xl font-[900]">
+            <span className="bg-green-600 text-white  text-2xl font-[900]">
               Total Letters - {dataSource?.tot_letters}
             </span>
             <Button

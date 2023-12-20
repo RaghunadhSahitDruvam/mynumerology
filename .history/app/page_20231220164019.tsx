@@ -109,7 +109,7 @@ const Page: React.FC = () => {
                   <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
                     Total
                   </th>
-                  <th className="border-4  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
+                  <th className="border-4px  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
                     V
                   </th>
                   <th className="border-4px-[10px]  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900] text-2xl">
