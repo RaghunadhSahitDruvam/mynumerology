@@ -127,9 +127,7 @@ const Page: React.FC = () => {
               .replaceAll(";", "")
               .replaceAll("(", "")
               .replaceAll(")", "")
-              .replaceAll("  ", " ")
-              .replaceAll("[", "")
-              .replaceAll("]", "")}
+              .replaceAll("  ", " ")}
             ref={inputFocusRef}
             onChange={(e) => {
               const newValue = e.target.value;
