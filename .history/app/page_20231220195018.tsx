@@ -2,8 +2,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -34,34 +33,29 @@ interface DataSource {
   g3nettot?: number;
   tot_letters?: number;
 }
+const saveHandler = async (dataSource: DataSource) => {
+  await axios
+    .post("/api/save", {
+      chaldean: dataSource.name_g2_block,
+      pythogorous: dataSource.name_g3_block,
+      tot_letters: dataSource.tot_letters,
+      g2tot: dataSource.g2tot,
+      g3tot: dataSource.g3tot,
+      g2vtot: dataSource.g2vtot,
+      g3vtot: dataSource.g3vtot,
+      g2nettot: dataSource.g2nettot,
+      g3nettot: dataSource.g3nettot,
+    })
+    .then((res) => toast.success("Saved Successfully."))
+    .catch((err) => toast.error(err));
+};
 
 const Page: React.FC = () => {
   let [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   let search = searchParams.get("name");
   const router = useRouter();
-  const saveHandler = async (dataSource: DataSource) => {
-    setLoading(true);
-    await axios
-      .post("/api/save", {
-        chaldean: dataSource.name_g2_block,
-        pythogorous: dataSource.name_g3_block,
-        tot_letters: dataSource.tot_letters,
-        g2tot: dataSource.g2tot,
-        g3tot: dataSource.g3tot,
-        g2vtot: dataSource.g2vtot,
-        g3vtot: dataSource.g3vtot,
-        g2nettot: dataSource.g2nettot,
-        g3nettot: dataSource.g3nettot,
-      })
-      .then((res) => {
-        setLoading(false);
-        toast.success("Name successfully added to Database ⭐!");
-      })
-      .catch((err) => toast.error(err));
-  };
 
   useEffect(() => {
     // Set initial value only if it's different from the current state
@@ -103,11 +97,7 @@ const Page: React.FC = () => {
     );
   };
 
-  return loading ? (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="animate-spin h-12 w-12 border-t-2 border-b-2 border-gray-900 rounded-full" />
-    </div>
-  ) : (
+  return (
     <div className="">
       <Header />
 
@@ -263,6 +253,7 @@ const Page: React.FC = () => {
               </Link>
             </div>
           </div>
+          <Toaster position="top-right" position="top-center" />
         </>
       ) : (
         <>
@@ -271,18 +262,6 @@ const Page: React.FC = () => {
           </div>
         </>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { ModeToggle } from "./mode";
 import Link from "next/link";
 import Image from "next/image";
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 const Header = () => {
   return (
@@ -14,9 +14,11 @@ const Header = () => {
         </Link>
         <div className="flex gap-[20px]">
           <ModeToggle />
-          <Badge variant="default">
-            <Link href={"/data"}>Saved Table</Link>
-          </Badge>
+          <div className="">
+            <Link href={"/data"}>
+              <Badge variant="default">Saved Table</Badge>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="border-b-2"></div>

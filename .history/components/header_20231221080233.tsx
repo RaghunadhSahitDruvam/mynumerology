@@ -2,7 +2,7 @@ import React from "react";
 import { ModeToggle } from "./mode";
 import Link from "next/link";
 import Image from "next/image";
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 const Header = () => {
   return (
@@ -12,11 +12,9 @@ const Header = () => {
           <Image src={"/images/logo.png"} alt="logo" height={50} width={50} />
           <span className="mt-[10px]">Numerology</span>
         </Link>
-        <div className="flex gap-[20px]">
+        <div className="flex">
           <ModeToggle />
-          <Badge variant="default">
-            <Link href={"/data"}>Saved Table</Link>
-          </Badge>
+          <Badge variant="default">Saved Table</Badge>
         </div>
       </div>
       <div className="border-b-2"></div>

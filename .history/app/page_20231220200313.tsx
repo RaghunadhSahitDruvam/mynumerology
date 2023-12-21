@@ -2,8 +2,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -58,7 +57,7 @@ const Page: React.FC = () => {
       })
       .then((res) => {
         setLoading(false);
-        toast.success("Name successfully added to Database ⭐!");
+        toast.success("Saved Successfully.");
       })
       .catch((err) => toast.error(err));
   };
@@ -271,18 +270,6 @@ const Page: React.FC = () => {
           </div>
         </>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
     </div>
   );
 };

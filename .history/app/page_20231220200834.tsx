@@ -58,7 +58,7 @@ const Page: React.FC = () => {
       })
       .then((res) => {
         setLoading(false);
-        toast.success("Name successfully added to Database ⭐!");
+        toast.success("Wow so easy!");
       })
       .catch((err) => toast.error(err));
   };

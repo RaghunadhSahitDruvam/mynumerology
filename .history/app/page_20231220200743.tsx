@@ -58,7 +58,7 @@ const Page: React.FC = () => {
       })
       .then((res) => {
         setLoading(false);
-        toast.success("Name successfully added to Database ⭐!");
+        toast.success("Wow so easy!");
       })
       .catch((err) => toast.error(err));
   };
@@ -271,18 +271,7 @@ const Page: React.FC = () => {
           </div>
         </>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+      <ToastContainer />
     </div>
   );
 };

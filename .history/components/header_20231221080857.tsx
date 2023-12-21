@@ -2,6 +2,7 @@ import React from "react";
 import { ModeToggle } from "./mode";
 import Link from "next/link";
 import Image from "next/image";
+import BadgeComponent from "./BadgeComponent";
 import { Badge } from "./ui/badge";
 
 const Header = () => {
