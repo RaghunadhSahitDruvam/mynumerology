@@ -104,14 +104,9 @@ const page = () => {
                   {i.g3nettot}
                 </td>
               </tr>
-              <tr className="">
-                <td></td>
-                <td>
-                  <span className="text-lg">
-                    Tot. Letters - {i.tot_letters}
-                  </span>
-                  <ButtonComponent id={i._id} />
-                </td>
+              <tr className="text-right">
+                {i.tot_letters}
+                <ButtonComponent id={i._id} />
               </tr>
               &nbsp;
             </tbody>
