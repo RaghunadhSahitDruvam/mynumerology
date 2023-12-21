@@ -13,7 +13,7 @@ const Header = () => {
           <Image src={"/images/logo.png"} alt="logo" height={50} width={50} />
           <span className="mt-[10px]">Numerology</span>
         </Link>
-        <div className="flex gap-[5px]">
+        <div className="flex gap-[20px]">
           <Link href={"/"}>
             <Button variant={"link"}>Home</Button>{" "}
           </Link>

@@ -13,14 +13,11 @@ const Header = () => {
           <Image src={"/images/logo.png"} alt="logo" height={50} width={50} />
           <span className="mt-[10px]">Numerology</span>
         </Link>
-        <div className="flex gap-[5px]">
-          <Link href={"/"}>
-            <Button variant={"link"}>Home</Button>{" "}
-          </Link>
+        <div className="flex gap-[20px]">
+          <ModeToggle />
           <Link href={"/data"}>
             <Button variant={"link"}>Saved Table</Button>{" "}
           </Link>
-          <ModeToggle />
         </div>
       </div>
       <div className="border-b-2"></div>
