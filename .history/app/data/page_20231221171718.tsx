@@ -119,7 +119,7 @@ const page = () => {
           ))}
         </table>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 "use client";
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ButtonComponent from "@/lib/button";
 import axios from "axios";
@@ -119,7 +118,7 @@ const page = () => {
           ))}
         </table>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };
