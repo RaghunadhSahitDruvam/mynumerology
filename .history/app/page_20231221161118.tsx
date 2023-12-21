@@ -271,7 +271,7 @@ const Page: React.FC = () => {
                 <Button
                   variant={"destructive"}
                   onClick={() => {
-                    setTextName("");
+                    setTextName(null);
                     setDataSource(null);
                   }}
                 >
