@@ -123,8 +123,8 @@ const Page: React.FC = () => {
             value={textName
               .replaceAll(".", "")
               .replaceAll(",", "")
-              .replaceAll(" - ", "")
               .replaceAll("-", "")
+              .replaceAll(" - ", "")
               .replaceAll(";", "")
               .replaceAll("(", "")
               .replaceAll(")", "")
