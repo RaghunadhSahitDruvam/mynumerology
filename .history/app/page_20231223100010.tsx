@@ -103,9 +103,6 @@ const Page: React.FC = () => {
   };
 
   const updateURL = (newTextName: string) => {
-    // Save the current cursor position
-    const cursorPosition = inputFocusRef.current.selectionStart;
-
     // Update the URL without a page reload
     const cleanedText = newTextName
       .replaceAll(".", "")
@@ -124,11 +121,6 @@ const Page: React.FC = () => {
 
     if (cleanedText !== textName) {
       router.push(`?name=${encodeURIComponent(cleanedText)}`);
-    }
-
-    // Restore the cursor position
-    if (inputFocusRef.current && cursorPosition !== null) {
-      inputFocusRef.current.setSelectionRange(cursorPosition, cursorPosition);
     }
   };
 
@@ -167,7 +159,7 @@ const Page: React.FC = () => {
             onChange={(e) => {
               const newValue = e.target.value;
               setTextName(newValue);
-              // updateURL(newValue); // Update the URL when input changes
+              updateURL(newValue); // Update the URL when input changes
             }}
           />
 
