@@ -160,7 +160,7 @@ const Page: React.FC = () => {
             onChange={(e) => {
               const newValue = e.target.value;
               setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
+              // updateURL(newValue); // Update the URL when input changes
             }}
           />
 

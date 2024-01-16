@@ -22,7 +22,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Footer from "@/components/footer";
 
 interface DataSource {
   name_g2_block?: string;
@@ -104,25 +103,33 @@ const Page: React.FC = () => {
   };
 
   const updateURL = (newTextName: string) => {
+    // Save the current cursor position
+    const cursorPosition = inputFocusRef.current.selectionStart;
+
     // Update the URL without a page reload
-    router.push(
-      `?name=${encodeURIComponent(
-        newTextName
-          .replaceAll(".", "")
-          .replaceAll(",", "")
-          .replaceAll(" - ", "")
-          .replaceAll("-", " ")
-          .replaceAll(";", "")
-          .replaceAll("&", " ")
-          .replaceAll("/", "")
-          .replaceAll(":", "")
-          .replaceAll("(", "")
-          .replaceAll(")", "")
-          .replaceAll("  ", " ")
-          .replaceAll("[", "")
-          .replaceAll("]", "")
-      )}`
-    );
+    const cleanedText = newTextName
+      .replaceAll(".", "")
+      .replaceAll(",", "")
+      .replaceAll(" - ", "")
+      .replaceAll("-", " ")
+      .replaceAll(";", "")
+      .replaceAll("&", " ")
+      .replaceAll("/", "")
+      .replaceAll(":", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("  ", " ")
+      .replaceAll("[", "")
+      .replaceAll("]", "");
+
+    if (cleanedText !== textName) {
+      router.push(`?name=${encodeURIComponent(cleanedText)}`);
+    }
+
+    // Restore the cursor position
+    if (inputFocusRef.current && cursorPosition !== null) {
+      inputFocusRef.current.setSelectionRange(cursorPosition, cursorPosition);
+    }
   };
 
   return loading ? (
@@ -160,7 +167,8 @@ const Page: React.FC = () => {
             onChange={(e) => {
               const newValue = e.target.value;
               setTextName(newValue);
-              updateURL(newValue); // Update the URL when input changes
+              console.log(textName);
+              updateURL(textName);
             }}
           />
 
@@ -168,6 +176,9 @@ const Page: React.FC = () => {
             type="submit"
             ref={buttonRef}
             disabled={textName.length === 0}
+            // onClick={
+            //   / Update the URL when input changes
+            // }
           >
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
