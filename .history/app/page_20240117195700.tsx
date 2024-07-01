@@ -36,12 +36,74 @@ interface DataSource {
 }
 
 const Page: React.FC = () => {
-  let [textName, setTextName] = useState<string>("");
+  const [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   let search = searchParams.get("name");
   const router = useRouter();
+
+  const inputFocusRef = useRef(null);
+  const buttonRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputFocusRef.current?.focus();
+    if (search !== null) {
+      if (buttonRef.current) {
+        buttonRef.current.click();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      const newValue = inputRef.current.value;
+      updateURL(newValue);
+    }
+  }, [textName]);
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios
+      .get(
+        `https://phinzi.com/convert?name=${textName
+          .replaceAll(".", "")
+          .replaceAll(",", "")
+          .replaceAll(" - ", "")
+          .replaceAll("-", " ")
+          .replaceAll(";", "")
+          .replaceAll("(", "")
+          .replaceAll("&", " ")
+          .replaceAll("/", "")
+          .replaceAll(":", "")
+          .replaceAll("  ", " ")
+          .replaceAll("[", "")
+          .replaceAll("]", "")}`
+      )
+      .then((res) => setDataSource(res.data));
+  };
+
+  const updateURL = (newTextName: string) => {
+    router.push(
+      `?name=${encodeURIComponent(
+        newTextName
+          .replaceAll(".", "")
+          .replaceAll(",", "")
+          .replaceAll(" - ", "")
+          .replaceAll("-", " ")
+          .replaceAll(";", "")
+          .replaceAll("(", "")
+          .replaceAll("&", " ")
+          .replaceAll("/", "")
+          .replaceAll(":", "")
+          .replaceAll("  ", " ")
+          .replaceAll("[", "")
+          .replaceAll("]", "")
+      )}`
+    );
+  };
+
   const saveHandler = async (dataSource: DataSource) => {
     setLoading(true);
     await axios
@@ -61,67 +123,6 @@ const Page: React.FC = () => {
         toast.success("Name successfully added to Database ⭐!");
       })
       .catch((err) => toast.error(err));
-  };
-
-  useEffect(() => {
-    // Set initial value only if it's different from the current state
-    if (search !== null && search !== textName) {
-      setTextName(search);
-    }
-  }, [search, textName]);
-
-  const inputFocusRef = useRef(null);
-  const buttonRef = useRef(null);
-  useEffect(() => {
-    inputFocusRef.current.focus();
-    if (search !== null) {
-      if (buttonRef.current) {
-        buttonRef.current.click();
-      }
-    }
-  }, []);
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    axios
-      .get(
-        `https://weljon.com/convert?name=${textName
-          .replaceAll(".", "")
-          .replaceAll(",", "")
-          .replaceAll(" - ", "")
-          .replaceAll("-", " ")
-          .replaceAll(";", "")
-          .replaceAll("(", "")
-          .replaceAll(" & ", "")
-          .replaceAll(")", "")
-          .replaceAll("/", "")
-          .replaceAll(":", "")
-          .replaceAll("  ", " ")
-          .replaceAll("[", "")
-          .replaceAll("]", "")}`
-      )
-      .then((res) => setDataSource(res.data));
-  };
-
-  const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
-    router.push(
-      `?name=${encodeURIComponent(
-        newTextName
-          .replaceAll(".", "")
-          .replaceAll(",", "")
-          .replaceAll(" - ", "")
-          .replaceAll("-", " ")
-          .replaceAll(";", "")
-          .replaceAll("&", " ")
-          .replaceAll("/", "")
-          .replaceAll(":", "")
-          .replaceAll("(", "")
-          .replaceAll(")", "")
-          .replaceAll("  ", " ")
-          .replaceAll("[", "")
-          .replaceAll("]", "")
-      )}`
-    );
   };
 
   return loading ? (
@@ -148,28 +149,19 @@ const Page: React.FC = () => {
               .replaceAll("-", " ")
               .replaceAll(";", "")
               .replaceAll("(", "")
-              .replaceAll(")", "")
               .replaceAll("&", " ")
               .replaceAll("/", "")
               .replaceAll(":", "")
               .replaceAll("  ", " ")
               .replaceAll("[", "")
               .replaceAll("]", "")}
-            ref={inputFocusRef}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setTextName(newValue);
-              console.log(textName);
-              updateURL(newValue);
-            }}
+            ref={inputRef}
           />
 
           <Button
             type="submit"
             ref={buttonRef}
-            // onClick={
-            //   () => updateURL(textName) // Update the URL when input changes
-            // }
+            onClick={() => updateURL(textName)}
             disabled={textName.length === 0}
           >
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
@@ -178,36 +170,50 @@ const Page: React.FC = () => {
       </div>
       {dataSource ? (
         <>
+          {" "}
           <div className="container mt-[30px] flex items-start justify-start">
+            {" "}
             <table
               border={2}
               className="border-4dark:border-white border-yellow-600"
             >
+              {" "}
               <thead className="border-4 dark:border-white border-yellow-600 p-[20px]">
+                {" "}
                 <tr className="border-4 dark:border-white border-yellow-600">
+                  {" "}
                   <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
-                    Grp.
-                  </th>
+                    {" "}
+                    Grp.{" "}
+                  </th>{" "}
                   <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
-                    Name
-                  </th>
+                    {" "}
+                    Name{" "}
+                  </th>{" "}
                   <th className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
-                    Total
-                  </th>
+                    {" "}
+                    Total{" "}
+                  </th>{" "}
                   <th className="border-4  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900]">
-                    V
-                  </th>
+                    {" "}
+                    V{" "}
+                  </th>{" "}
                   <th className="border-4px-[10px]  dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl font-[900] text-2xl">
-                    C
-                  </th>
-                </tr>
-              </thead>
+                    {" "}
+                    C{" "}
+                  </th>{" "}
+                </tr>{" "}
+              </thead>{" "}
               <tbody className="border-4 dark:border-white border-yellow-600 text-[#960084] font-[900]">
+                {" "}
                 <tr className="border-4 dark:border-white border-yellow-600">
+                  {" "}
                   <td className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl ">
-                    C
-                  </td>
+                    {" "}
+                    C{" "}
+                  </td>{" "}
                   <td className=" border-4 dark:border-white border-yellow-600 ">
+                    {" "}
                     <table
                       className=" table-padding text-2xl"
                       dangerouslySetInnerHTML={{
@@ -215,26 +221,29 @@ const Page: React.FC = () => {
                           typeof dataSource !== "undefined" &&
                           dataSource?.name_g2_block,
                       }}
-                    ></table>
-                  </td>
-
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g2tot}
-                  </td>
+                    ></table>{" "}
+                  </td>{" "}
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
                     {" "}
-                    {dataSource?.g2vtot}
-                  </td>
+                    {dataSource?.g2tot}{" "}
+                  </td>{" "}
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
                     {" "}
-                    {dataSource?.g2nettot}
-                  </td>
-                </tr>
+                    {dataSource?.g2vtot}{" "}
+                  </td>{" "}
+                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                    {" "}
+                    {dataSource?.g2nettot}{" "}
+                  </td>{" "}
+                </tr>{" "}
                 <tr className="border-4 dark:border-white border-yellow-600">
+                  {" "}
                   <td className="border-4 dark:border-white border-yellow-600 bg-green-600 text-white  text-2xl ">
-                    P
-                  </td>
+                    {" "}
+                    P{" "}
+                  </td>{" "}
                   <td className=" border-4 dark:border-white border-yellow-600">
+                    {" "}
                     <table
                       className=" table-padding text-2xl"
                       dangerouslySetInnerHTML={{
@@ -242,57 +251,69 @@ const Page: React.FC = () => {
                           typeof dataSource !== "undefined" &&
                           dataSource?.name_g3_block,
                       }}
-                    ></table>
-                  </td>
-
-                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3tot}
-                  </td>
+                    ></table>{" "}
+                  </td>{" "}
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
                     {" "}
-                    {dataSource?.g3vtot}
-                  </td>
+                    {dataSource?.g3tot}{" "}
+                  </td>{" "}
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
                     {" "}
-                    {dataSource?.g3nettot}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                    {dataSource?.g3vtot}{" "}
+                  </td>{" "}
+                  <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
+                    {" "}
+                    {dataSource?.g3nettot}{" "}
+                  </td>{" "}
+                </tr>{" "}
+              </tbody>{" "}
+            </table>{" "}
+          </div>{" "}
           <div className="container flex  items-start mt-[10px] justify-between">
             {" "}
             <span className="text-green-600  text-2xl font-[900]">
-              Total Letters - {dataSource?.tot_letters}
-            </span>
+              {" "}
+              Total Letters - {dataSource?.tot_letters}{" "}
+            </span>{" "}
             <div className="">
-              {/* <Button variant={"default"} className="mr-[10px]"> */}
+              {" "}
+              {/* <Button variant={"default"} className="mr-[10px]"> */}{" "}
               <AlertDialog>
+                {" "}
                 <AlertDialogTrigger>
+                  {" "}
                   <Button variant={"default"} className="mr-[10px]">
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
+                    {" "}
+                    Save{" "}
+                  </Button>{" "}
+                </AlertDialogTrigger>{" "}
                 <AlertDialogContent>
+                  {" "}
                   <AlertDialogHeader>
+                    {" "}
                     <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
+                      {" "}
+                      Are you absolutely sure?{" "}
+                    </AlertDialogTitle>{" "}
                     <AlertDialogDescription>
+                      {" "}
                       Do you want to save this name -{" "}
-                      <b>{textName.toUpperCase()}</b> ?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
+                      <b>{textName.toUpperCase()}</b> ?{" "}
+                    </AlertDialogDescription>{" "}
+                  </AlertDialogHeader>{" "}
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    {" "}
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>{" "}
                     <AlertDialogAction onClick={() => saveHandler(dataSource)}>
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              {/* </Button> */}
+                      {" "}
+                      Continue{" "}
+                    </AlertDialogAction>{" "}
+                  </AlertDialogFooter>{" "}
+                </AlertDialogContent>{" "}
+              </AlertDialog>{" "}
+              {/* </Button> */}{" "}
               <Link href={"/"}>
+                {" "}
                 <Button
                   variant={"destructive"}
                   onClick={() => {
@@ -300,17 +321,20 @@ const Page: React.FC = () => {
                     setDataSource(null);
                   }}
                 >
-                  Cancel
-                </Button>
-              </Link>
-            </div>
-          </div>
+                  {" "}
+                  Cancel{" "}
+                </Button>{" "}
+              </Link>{" "}
+            </div>{" "}
+          </div>{" "}
         </>
       ) : (
         <>
+          {" "}
           <div className="container flex justify-center align-middle">
-            <h1>Please write your name to get started...</h1>
-          </div>
+            {" "}
+            <h1>Please write your name to get started...</h1>{" "}
+          </div>{" "}
         </>
       )}
       <ToastContainer
@@ -325,7 +349,6 @@ const Page: React.FC = () => {
         pauseOnHover
         theme="colored"
       />
-      {/* <Footer /> */}
     </div>
   );
 };

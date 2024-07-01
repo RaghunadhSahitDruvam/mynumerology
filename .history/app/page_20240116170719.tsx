@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Footer from "@/components/footer";
 
 interface DataSource {
   name_g2_block?: string;
@@ -82,23 +83,22 @@ const Page: React.FC = () => {
   }, []);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const processedTextName = textName
+      .replaceAll(".", "")
+      .replaceAll(",", "")
+      .replaceAll(" - ", "")
+      .replaceAll("-", " ")
+      .replaceAll(";", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("&", " ")
+      .replaceAll("/", "")
+      .replaceAll(":", "")
+      .replaceAll("  ", " ")
+      .replaceAll("[", "")
+      .replaceAll("]", "");
     axios
-      .get(
-        `https://weljon.com/convert?name=${textName
-          .replaceAll(".", "")
-          .replaceAll(",", "")
-          .replaceAll(" - ", "")
-          .replaceAll("-", " ")
-          .replaceAll(";", "")
-          .replaceAll("(", "")
-          .replaceAll(" & ", "")
-          .replaceAll(")", "")
-          .replaceAll("/", "")
-          .replaceAll(":", "")
-          .replaceAll("  ", " ")
-          .replaceAll("[", "")
-          .replaceAll("]", "")}`
-      )
+      .get(`https://phinzi.com/convert?name=${processedTextName}`)
       .then((res) => setDataSource(res.data));
   };
 
@@ -141,35 +141,17 @@ const Page: React.FC = () => {
             type="text"
             placeholder="Name"
             className="w-[70%]"
-            value={textName
-              .replaceAll(".", "")
-              .replaceAll(",", "")
-              .replaceAll(" - ", "")
-              .replaceAll("-", " ")
-              .replaceAll(";", "")
-              .replaceAll("(", "")
-              .replaceAll(")", "")
-              .replaceAll("&", " ")
-              .replaceAll("/", "")
-              .replaceAll(":", "")
-              .replaceAll("  ", " ")
-              .replaceAll("[", "")
-              .replaceAll("]", "")}
+            value={textName}
             ref={inputFocusRef}
             onChange={(e) => {
               const newValue = e.target.value;
               setTextName(newValue);
-              console.log(textName);
-              updateURL(newValue);
             }}
           />
 
           <Button
             type="submit"
             ref={buttonRef}
-            // onClick={
-            //   () => updateURL(textName) // Update the URL when input changes
-            // }
             disabled={textName.length === 0}
           >
             Calculate <ArrowRight className="ml-2 h-4 w-4" />

@@ -84,7 +84,7 @@ const Page: React.FC = () => {
     e.preventDefault();
     axios
       .get(
-        `https://weljon.com/convert?name=${textName
+        `https://phinzi.com/convert?name=${textName
           .replaceAll(".", "")
           .replaceAll(",", "")
           .replaceAll(" - ", "")
@@ -160,7 +160,7 @@ const Page: React.FC = () => {
               const newValue = e.target.value;
               setTextName(newValue);
               console.log(textName);
-              updateURL(newValue);
+              updateURL(newValue); // Update the URL with the new value
             }}
           />
 

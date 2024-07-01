@@ -35,7 +35,7 @@ interface DataSource {
   tot_letters?: number;
 }
 
-const Page: React.FC = () => {
+const ValuePage: React.FC = ({ params }: { params: any }) => {
   let [textName, setTextName] = useState<string>("");
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -84,7 +84,7 @@ const Page: React.FC = () => {
     e.preventDefault();
     axios
       .get(
-        `https://weljon.com/convert?name=${textName
+        `https://phinzi.com/convert?name=${textName
           .replaceAll(".", "")
           .replaceAll(",", "")
           .replaceAll(" - ", "")
@@ -102,27 +102,27 @@ const Page: React.FC = () => {
       .then((res) => setDataSource(res.data));
   };
 
-  const updateURL = (newTextName: string) => {
-    // Update the URL without a page reload
-    router.push(
-      `?name=${encodeURIComponent(
-        newTextName
-          .replaceAll(".", "")
-          .replaceAll(",", "")
-          .replaceAll(" - ", "")
-          .replaceAll("-", " ")
-          .replaceAll(";", "")
-          .replaceAll("&", " ")
-          .replaceAll("/", "")
-          .replaceAll(":", "")
-          .replaceAll("(", "")
-          .replaceAll(")", "")
-          .replaceAll("  ", " ")
-          .replaceAll("[", "")
-          .replaceAll("]", "")
-      )}`
-    );
-  };
+  // const updateURL = (newTextName: string) => {
+  //   // Update the URL without a page reload
+  //   router.push(
+  //     `?name=${encodeURIComponent(
+  //       newTextName
+  //         .replaceAll(".", "")
+  //         .replaceAll(",", "")
+  //         .replaceAll(" - ", "")
+  //         .replaceAll("-", " ")
+  //         .replaceAll(";", "")
+  //         .replaceAll("&", " ")
+  //         .replaceAll("/", "")
+  //         .replaceAll(":", "")
+  //         .replaceAll("(", "")
+  //         .replaceAll(")", "")
+  //         .replaceAll("  ", " ")
+  //         .replaceAll("[", "")
+  //         .replaceAll("]", "")
+  //     )}`
+  //   );
+  // };
 
   return loading ? (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -141,7 +141,7 @@ const Page: React.FC = () => {
             type="text"
             placeholder="Name"
             className="w-[70%]"
-            value={textName
+            value={params.value
               .replaceAll(".", "")
               .replaceAll(",", "")
               .replaceAll(" - ", "")
@@ -160,17 +160,16 @@ const Page: React.FC = () => {
               const newValue = e.target.value;
               setTextName(newValue);
               console.log(textName);
-              updateURL(newValue);
+
+              // updateURL(newValue); // Update the URL when input changes
             }}
           />
 
           <Button
             type="submit"
             ref={buttonRef}
-            // onClick={
-            //   () => updateURL(textName) // Update the URL when input changes
-            // }
             disabled={textName.length === 0}
+            onClick={() => router.push(`/${textName}`)}
           >
             Calculate <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
@@ -330,4 +329,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default Page;
+export default ValuePage;

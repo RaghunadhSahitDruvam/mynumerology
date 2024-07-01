@@ -84,7 +84,7 @@ const Page: React.FC = () => {
     e.preventDefault();
     axios
       .get(
-        `https://weljon.com/convert?name=${textName
+        `https://phinzi.com/convert?name=${textName
           .replaceAll(".", "")
           .replaceAll(",", "")
           .replaceAll(" - ", "")
