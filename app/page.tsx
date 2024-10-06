@@ -194,27 +194,50 @@ const Page: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <div className="text-center flex flex-col items-center mt-3">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button>Save</Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This will save your name in the database. You will be able
-                    to see it in the <Link href={"/saved"}>saved</Link> section.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => saveHandler(dataSource)}>
+          <div className="container flex  items-start mt-[10px] justify-between">
+            {" "}
+            <span className="text-green-600  text-2xl font-[900]">
+              Total Letters - {dataSource?.tot_letters}
+            </span>
+            <div className="">
+              {/* <Button variant={"default"} className="mr-[10px]"> */}
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button variant={"default"} className="mr-[10px]">
                     Save
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Do you want to save this name -{" "}
+                      <b>{textName.toUpperCase()}</b> ?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => saveHandler(dataSource)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              {/* </Button> */}
+              <Link href={"/"}>
+                <Button
+                  variant={"destructive"}
+                  onClick={() => {
+                    setTextName("");
+                    setDataSource(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Link>
+            </div>
           </div>
         </>
       ) : null}
