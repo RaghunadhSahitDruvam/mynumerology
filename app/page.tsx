@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useSearchParams } from "next/navigation";
 
 interface DataSource {
   name_g2_block?: string;
@@ -37,9 +38,6 @@ import { useSearchParams } from "next/navigation";
 const Page: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const searchParams = useSearchParams();
-  const name = searchParams.get("name");
-  const [textName, setTextName] = useState<string>(name || "");
 
   const saveHandler = async (dataSource: DataSource) => {
     setLoading(true);
