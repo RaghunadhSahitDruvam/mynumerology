@@ -34,15 +34,12 @@ interface DataSource {
 }
 import { useSearchParams } from "next/navigation";
 
-
 const Page: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const searchParams = useSearchParams()
-  const name = searchParams.get('name')
-  const [textName, setTextName] = useState<string>(name||"");
-
-
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
+  const [textName, setTextName] = useState<string>(name || "");
 
   const saveHandler = async (dataSource: DataSource) => {
     setLoading(true);
@@ -71,15 +68,52 @@ const Page: React.FC = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Extract digits from the input
+    const digits = textName.match(/\d/g) || [];
+    const digitsSum = digits.reduce((sum, digit) => sum + parseInt(digit), 0);
+    const numDigits = digits.length;
+
+    // Remove digits for API call to get base calculation
+    const nameWithoutDigits = textName.replace(/\d/g, "");
+    const nameForApi = nameWithoutDigits
+      .replace(/[.,;()&/:]/g, "") // Remove unwanted characters
+      .replace(/\s+/g, " ") // Replace multiple spaces with a single space
+      .trim(); // Remove leading and trailing spaces
+
     // Making an API request without updating the URL
     axios
-      .get(
-        `https://weljon.com/convert?name=${textName
-          .replace(/[.,;()&/:]/g, "") // Remove unwanted characters
-          .replace(/\s+/g, " ") // Replace multiple spaces with a single space
-          .trim()}` // Remove leading and trailing spaces
-      )
-      .then((res) => setDataSource(res.data))
+      .get(`https://weljon.com/convert?name=${nameForApi}`)
+      .then((res) => {
+        // Ensure we have numeric values by using Number() and defaulting to 0
+        const baseData = {
+          ...res.data,
+          tot_letters: Number(res.data.tot_letters) || 0,
+          g2tot: Number(res.data.g2tot) || 0,
+          g3tot: Number(res.data.g3tot) || 0,
+          g2vtot: Number(res.data.g2vtot) || 0,
+          g3vtot: Number(res.data.g3vtot) || 0,
+          g2nettot: Number(res.data.g2nettot) || 0,
+          g3nettot: Number(res.data.g3nettot) || 0,
+        };
+
+        // Add digit calculations but keep original HTML blocks
+        const modifiedData = {
+          ...baseData,
+          name_g2_block: baseData.name_g2_block, // Keep original HTML blocks
+          name_g3_block: baseData.name_g3_block, // Keep original HTML blocks
+          tot_letters: baseData.tot_letters + numDigits,
+          g2tot: baseData.g2tot + digitsSum,
+          g3tot: baseData.g3tot + digitsSum,
+          g2nettot: baseData.g2tot + digitsSum - baseData.g2vtot,
+          g3nettot: baseData.g3tot + digitsSum - baseData.g3vtot,
+        };
+
+        console.log("Base data:", baseData);
+        console.log("Modified data:", modifiedData);
+        console.log("Digits:", digits, "Sum:", digitsSum);
+
+        setDataSource(modifiedData);
+      })
       .catch((err) => toast.error(err));
   };
 
@@ -106,9 +140,9 @@ const Page: React.FC = () => {
             type="text"
             placeholder="Name"
             className="w-[70%]"
-            value={textName} // Keep this value bound to textName state
+            value={textName}
             ref={inputFocusRef}
-            onChange={(e) => setTextName(e.target.value)} // Update state on input change
+            onChange={(e) => setTextName(e.target.value)}
           />
 
           <Button
@@ -155,21 +189,18 @@ const Page: React.FC = () => {
                     <table
                       className="table-padding text-2xl"
                       dangerouslySetInnerHTML={{
-                        __html:
-                          typeof dataSource !== "undefined" &&
-                          dataSource?.name_g2_block,
+                        __html: dataSource?.name_g2_block || "",
                       }}
                     ></table>
                   </td>
-
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g2tot}
+                    {dataSource?.g2tot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g2vtot}
+                    {dataSource?.g2vtot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g2nettot}
+                    {dataSource?.g2nettot || 0}
                   </td>
                 </tr>
                 <tr className="border-4 dark:border-white border-yellow-600">
@@ -180,33 +211,28 @@ const Page: React.FC = () => {
                     <table
                       className="table-padding text-2xl"
                       dangerouslySetInnerHTML={{
-                        __html:
-                          typeof dataSource !== "undefined" &&
-                          dataSource?.name_g3_block,
+                        __html: dataSource?.name_g3_block || "",
                       }}
                     ></table>
                   </td>
-
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3tot}
+                    {dataSource?.g3tot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3vtot}
+                    {dataSource?.g3vtot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3nettot}
+                    {dataSource?.g3nettot || 0}
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div className="container flex  items-start mt-[10px] justify-between">
-            {" "}
-            <span className="text-green-600  text-2xl font-[900]">
-              Total Letters - {dataSource?.tot_letters}
+          <div className="container flex items-start mt-[10px] justify-between">
+            <span className="text-green-600 text-2xl font-[900]">
+              Total Letters - {dataSource?.tot_letters || 0}
             </span>
             <div className="">
-              {/* <Button variant={"default"} className="mr-[10px]"> */}
               <AlertDialog>
                 <AlertDialogTrigger>
                   <Button variant={"default"} className="mr-[10px]">
@@ -231,7 +257,6 @@ const Page: React.FC = () => {
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-              {/* </Button> */}
               <Link href={"/"}>
                 <Button
                   variant={"destructive"}
