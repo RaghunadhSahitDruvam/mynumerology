@@ -76,6 +76,14 @@ const Page: React.FC = () => {
     }
   };
 
+  // Function to sanitize input by removing special characters and extra spaces
+  const sanitizeInput = (input: string): string => {
+    // Remove special characters, keeping only letters, numbers, and spaces
+    const withoutSpecialChars = input.replace(/[^\w\s]/gi, "");
+    // Replace multiple spaces with a single space and trim
+    return withoutSpecialChars.replace(/\s+/g, " ").trim();
+  };
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -84,11 +92,14 @@ const Page: React.FC = () => {
       return;
     }
 
+    // Sanitize the input before sending the request
+    const sanitizedName = sanitizeInput(textName);
+
     setLoading(true);
 
     try {
       const response = await fetch(
-        `/api/convert?name=${encodeURIComponent(textName.trim())}`
+        `/api/convert?name=${encodeURIComponent(sanitizedName)}`
       );
 
       if (!response.ok) {
@@ -216,18 +227,18 @@ const Page: React.FC = () => {
                     <table
                       className="table-padding text-2xl"
                       dangerouslySetInnerHTML={{
-                        __html: dataSource?.name_g3_block || "",
+                        __html: dataSource?.name_g1_block || "",
                       }}
                     ></table>
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3tot || 0}
+                    {dataSource?.g1tot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3vtot || 0}
+                    {dataSource?.g1vtot || 0}
                   </td>
                   <td className="border-4 dark:border-white border-yellow-600 text-2xl bg-green-600 text-white ">
-                    {dataSource?.g3nettot || 0}
+                    {dataSource?.g1nettot || 0}
                   </td>
                 </tr>
               </tbody>
